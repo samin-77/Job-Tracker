@@ -1,3 +1,4 @@
+// Initial Data
 let jobs = [
     { id: 1, companyName: "Google", position: "Frontend Dev", location: "Mountain View, CA", type: "Full-time", salary: "$120k", description: "Modern UI development using React and high-performance frontend architecture.", status: "all" },
     { id: 2, companyName: "Amazon", position: "SDE-1", location: "Seattle, WA", type: "Remote", salary: "$130k", description: "Designing scalable backend microservices and cloud infrastructure for AWS.", status: "all" },
@@ -8,15 +9,19 @@ let jobs = [
     { id: 7, companyName: "Airbnb", position: "Mobile Dev", location: "New York, NY", type: "Hybrid", salary: "$135k", description: "Enhancing seamless travel experiences for iOS and Android mobile users.", status: "all" },
     { id: 8, companyName: "Spotify", position: "Backend Dev", location: "Austin, TX", type: "Part-time", salary: "$115k", description: "Building scalable audio streaming services and discovery algorithms.", status: "all" }
 ];
+
 let currentTab = 'all';
-function toggleTheme(){
+
+function toggleTheme() {
     document.documentElement.classList.toggle('dark');
 }
-function updateDashboard(){
+
+function updateDashboard() {
     document.getElementById('total-count').innerText = jobs.length;
     document.getElementById('interview-count').innerText = jobs.filter(j => j.status === 'interview').length;
     document.getElementById('rejected-count').innerText = jobs.filter(j => j.status === 'rejected').length;
 }
+
 function render() {
     const container = document.getElementById('jobs-container');
     const emptyState = document.getElementById('no-jobs-state');
@@ -37,7 +42,7 @@ function render() {
             let glowClass = "";
             let badgeHTML = '';
 
-            // Apply specific accent colors and intensified Dark Mode glows
+            // Status Logic: Sets the Vertical Outline and the Glowing Shadow
             if (job.status === 'interview') {
                 accentClass = "border-l-4 border-l-emerald-500";
                 glowClass = "hover:shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] dark:hover:shadow-[0_0_25px_rgba(16,185,129,0.5)]";
@@ -83,17 +88,21 @@ function render() {
         });
     }
 }
+
+// Global scope window functions
 window.updateStatus = (id, status) => {
     const job = jobs.find(j => j.id === id);
     job.status = (job.status === status) ? 'all' : status;
     updateDashboard();
     render();
 };
+
 window.deleteJob = (id) => {
     jobs = jobs.filter(j => j.id !== id);
     updateDashboard();
     render();
 };
+
 window.switchTab = (tab) => {
     currentTab = tab;
     ['all', 'interview', 'rejected'].forEach(t => {
@@ -106,5 +115,7 @@ window.switchTab = (tab) => {
     });
     render();
 };
+
+// Initialize App
 updateDashboard();
 render();
