@@ -1,4 +1,3 @@
-// Initial Data
 let jobs = [
     { id: 1, companyName: "Google", position: "Frontend Dev", location: "Remote", type: "Full-time", salary: "$120k", description: "Modern UI development using React.", status: "all" },
     { id: 2, companyName: "Amazon", position: "SDE-1", location: "Seattle", type: "On-site", salary: "$130k", description: "Scalable backend systems.", status: "all" },
@@ -9,44 +8,36 @@ let jobs = [
     { id: 7, companyName: "Airbnb", position: "Mobile Dev", location: "Hybrid", salary: "$135k", description: "Seamless travel experiences.", status: "all" },
     { id: 8, companyName: "Spotify", position: "Backend Dev", location: "Full-time", salary: "$115k", description: "Scalable audio streaming.", status: "all" }
 ];
-
 let currentTab = 'all';
-
 // Theme Logic
 function toggleTheme() {
     document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 }
-
 // Set initial theme based on preference
 if (localStorage.getItem('theme') === 'dark') {
     document.documentElement.classList.add('dark');
 }
-
 function updateDashboard() {
     document.getElementById('total-count').innerText = jobs.length;
     document.getElementById('interview-count').innerText = jobs.filter(j => j.status === 'interview').length;
     document.getElementById('rejected-count').innerText = jobs.filter(j => j.status === 'rejected').length;
 }
-
 function render() {
     const container = document.getElementById('jobs-container');
     const emptyState = document.getElementById('no-jobs-state');
     container.innerHTML = '';
-    
     let filteredJobs = currentTab === 'all' ? jobs : jobs.filter(j => j.status === currentTab);
-
-    // Dynamic Job Count Display (e.g., Job 1 of 8)
+    // Dynamic Job Count Display
     document.getElementById('section-job-count').innerText = `${filteredJobs.length} of ${jobs.length}`;
-
-    if (filteredJobs.length === 0) {
+    if(filteredJobs.length === 0){
         container.classList.add('hidden');
         emptyState.classList.remove('hidden');
-    } else {
+    } 
+    else{
         container.classList.remove('hidden');
         emptyState.classList.add('hidden');
-
-        filteredJobs.forEach(job => {
+        filteredJobs.forEach(job =>{
             const card = document.createElement('div');
             card.className = "bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col justify-between transition-transform hover:scale-[1.02]";
             card.innerHTML = `
@@ -70,20 +61,17 @@ function render() {
         });
     }
 }
-
 window.updateStatus = (id, status) => {
     const job = jobs.find(j => j.id === id);
     job.status = (job.status === status) ? 'all' : status;
     updateDashboard();
     render();
 };
-
 window.deleteJob = (id) => {
     jobs = jobs.filter(j => j.id !== id);
     updateDashboard();
     render();
 };
-
 window.switchTab = (tab) => {
     currentTab = tab;
     ['all', 'interview', 'rejected'].forEach(t => {
@@ -94,6 +82,5 @@ window.switchTab = (tab) => {
     });
     render();
 };
-
 updateDashboard();
 render();
